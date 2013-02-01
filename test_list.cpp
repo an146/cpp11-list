@@ -60,8 +60,25 @@ test_ints()
     assert_range(ls.begin(), ls.end(), {4, 2, 124, 123, 0, 3});
 }
 
+struct A
+{
+    int _x;
+    A(int x) : _x(x) { }
+};
+
+void
+test_nonpod()
+{
+    list<A> ls;
+    ls.push_back(A(42));
+    ls.reverse();
+    ls.erase(ls.begin());
+    assert(ls.begin() == ls.end());
+}
+
 int
 main()
 {
     test_ints();
+    test_nonpod();
 }
