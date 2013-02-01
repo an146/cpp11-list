@@ -55,6 +55,9 @@ test_ints()
     assert_range(ls.begin(), ls.end(), {3, 0, 123, 2, 4});
     ls.insert(it, 124);
     assert_range(ls.begin(), ls.end(), {3, 0, 123, 124, 2, 4});
+
+    ls.reverse();
+    assert_range(ls.begin(), ls.end(), {4, 2, 124, 123, 0, 3});
 }
 
 int

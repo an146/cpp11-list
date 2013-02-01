@@ -1,3 +1,5 @@
+#include <algorithm>
+
 namespace ourstl
 {
     struct list_node
@@ -25,6 +27,11 @@ namespace ourstl
         inline void reset() throw()
         {
             this->prev = this->next = this;
+        }
+
+        inline void reverse() throw()
+        {
+            std::swap(this->prev, this->next);
         }
     };
 
@@ -75,5 +82,13 @@ namespace ourstl
         }
         void push_front(const T &value) { insert(begin(), value); }
         void push_back(const T &value) { insert(end(), value); }
+
+        void reverse()
+        {
+            iterator i = end();
+            do {
+                i._node->reverse();
+            } while (--i != end());
+        }
     };
 }
