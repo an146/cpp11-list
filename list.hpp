@@ -16,7 +16,7 @@ namespace ourstl
             insert(n->prev, n);
         }
 
-        inline void remove() throw()
+        inline void erase() throw()
         {
             this->prev->next = this->next;
             this->next->prev = this->prev;
@@ -39,12 +39,16 @@ namespace ourstl
             explicit node(const T &value) : _value(value) { }
         };
 
+        list_node head;
+
+    public:
         class iterator
         {
             friend class list;
             list_node *_node;
-        public:
             iterator(list_node *n) : _node(n) { }
+        public:
+            iterator() { }
             T &operator *() { return reinterpret_cast<node *>(_node)->_value; }
             T *operator ->() { return &**this; }
             iterator operator ++() { _node = _node->next; return *this; }
@@ -53,8 +57,6 @@ namespace ourstl
             bool operator !=(const iterator &other) const { return _node != other._node; }
         };
 
-        list_node head;
-    public:
         list() { head.reset(); }
         iterator begin() { return head.next; }
         iterator end() { return &head; }
@@ -63,6 +65,13 @@ namespace ourstl
             node *n = new node(value);
             n->_node.insert_before(where._node);
             return &n->_node;
+        }
+        iterator erase(iterator it)
+        {
+            iterator ret = it;
+            ++ret;
+            it._node->erase();
+            return ret;
         }
         void push_front(const T &value) { insert(begin(), value); }
         void push_back(const T &value) { insert(end(), value); }

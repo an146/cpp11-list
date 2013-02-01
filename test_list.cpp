@@ -39,13 +39,22 @@ void
 test_ints()
 {
     list<int> ls;
+    list<int>::iterator it;
+
     ls.push_back(0);
     ls.push_back(1);
     ls.push_back(2);
     ls.push_front(3);
     ls.push_back(4);
-
     assert_range(ls.begin(), ls.end(), {3, 0, 1, 2, 4});
+
+    it = ls.begin(); ++it; ++it;
+    ls.insert(it, 123);
+    assert_range(ls.begin(), ls.end(), {3, 0, 123, 1, 2, 4});
+    it = ls.erase(it);
+    assert_range(ls.begin(), ls.end(), {3, 0, 123, 2, 4});
+    ls.insert(it, 124);
+    assert_range(ls.begin(), ls.end(), {3, 0, 123, 124, 2, 4});
 }
 
 int
