@@ -81,4 +81,5 @@ main()
 {
     test_ints();
     test_nonpod();
+    cerr << "OK" << endl;
 }

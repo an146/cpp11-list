@@ -1,3 +1,6 @@
+#ifndef OURSTL_LIST_H
+#define OURSTL_LIST_H
+
 #include <algorithm>
 
 namespace ourstl
@@ -92,3 +95,5 @@ namespace ourstl
         }
     };
 }
+
+#endif // OURSTL_LIST_H
