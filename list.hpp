@@ -52,7 +52,16 @@ namespace ourstl
         list_node head;
 
     public:
+        //TODO: basic_iterator<class NodePointer, ...>
+        class iterator;
         class const_iterator;
+        class iterator_identity
+        {
+            friend class iterator;
+            friend class const_iterator;
+            const list_node *_node;
+            iterator_identity(const list_node *n) : _node(n) { }
+        };
 
         class iterator
         {
@@ -66,8 +75,9 @@ namespace ourstl
             T *operator ->() { return &**this; }
             iterator operator ++() { _node = _node->next; return *this; }
             iterator operator --() { _node = _node->prev; return *this; }
-            bool operator ==(const iterator &other) const { return _node == other._node; }
-            bool operator !=(const iterator &other) const { return _node != other._node; }
+            operator iterator_identity() const { return _node; }
+            bool operator ==(const iterator_identity &other) const { return _node == other._node; }
+            bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
         class const_iterator
@@ -82,8 +92,9 @@ namespace ourstl
             const T *operator ->() { return &**this; }
             const_iterator operator ++() { _node = _node->next; return *this; }
             const_iterator operator --() { _node = _node->prev; return *this; }
-            bool operator ==(const const_iterator &other) const { return _node == other._node; }
-            bool operator !=(const const_iterator &other) const { return _node != other._node; }
+            operator iterator_identity() const { return _node; }
+            bool operator ==(const iterator_identity &other) const { return _node == other._node; }
+            bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
         list() { head.reset(); }

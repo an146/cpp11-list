@@ -65,6 +65,8 @@ test_ints()
     assert_equal_ranges(ls.begin(), ls.end(), cls.begin(), cls.end());
     assert(ls.begin() == cls.begin());
     assert(cls.end() == ls.end());
+    assert(ls.begin() != cls.end());
+    assert(ls.end() != cls.begin());
 }
 
 struct A
