@@ -63,6 +63,8 @@ test_ints()
     const list<int> &cls = ls;
     assert_range(cls.begin(), cls.end(), {4, 2, 124, 123, 0, 3});
     assert_equal_ranges(ls.begin(), ls.end(), cls.begin(), cls.end());
+    assert(ls.begin() == cls.begin());
+    assert(cls.end() == ls.end());
 }
 
 struct A
