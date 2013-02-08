@@ -52,8 +52,11 @@ namespace ourstl
         list_node head;
 
     public:
+        class const_iterator;
+
         class iterator
         {
+            friend class const_iterator;
             friend class list;
             list_node *_node;
             iterator(list_node *n) : _node(n) { }
@@ -67,9 +70,27 @@ namespace ourstl
             bool operator !=(const iterator &other) const { return _node != other._node; }
         };
 
+        class const_iterator
+        {
+            friend class list;
+            const list_node *_node;
+            const_iterator(const list_node *n) : _node(n) { }
+        public:
+            const_iterator() { }
+            const_iterator(iterator it) : _node(it._node) { }
+            const T &operator *() { return reinterpret_cast<const node *>(_node)->_value; }
+            const T *operator ->() { return &**this; }
+            const_iterator operator ++() { _node = _node->next; return *this; }
+            const_iterator operator --() { _node = _node->prev; return *this; }
+            bool operator ==(const const_iterator &other) const { return _node == other._node; }
+            bool operator !=(const const_iterator &other) const { return _node != other._node; }
+        };
+
         list() { head.reset(); }
         iterator begin() { return head.next; }
         iterator end() { return &head; }
+        const_iterator begin() const { return head.next; }
+        const_iterator end() const { return &head; }
         iterator insert(iterator where, const T &value)
         {
             node *n = new node(value);

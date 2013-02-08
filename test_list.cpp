@@ -58,6 +58,11 @@ test_ints()
 
     ls.reverse();
     assert_range(ls.begin(), ls.end(), {4, 2, 124, 123, 0, 3});
+
+    //some const_iterator testing
+    const list<int> &cls = ls;
+    assert_range(cls.begin(), cls.end(), {4, 2, 124, 123, 0, 3});
+    assert_equal_ranges(ls.begin(), ls.end(), cls.begin(), cls.end());
 }
 
 struct A
