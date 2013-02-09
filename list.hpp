@@ -51,6 +51,7 @@ namespace ourstd
         };
 
         list_node head;
+        A allocator;
 
     public:
         typedef typename A::difference_type difference_type;
@@ -77,9 +78,9 @@ namespace ourstd
             list_node *_node;
             iterator(list_node *n) : _node(n) { }
         protected:
-            void destroy()
+            node *get_node() const
             {
-                delete reinterpret_cast<node *>(_node);
+                return reinterpret_cast<node *>(_node);
             }
         public:
             typedef list::difference_type difference_type;
@@ -90,7 +91,7 @@ namespace ourstd
             typedef std::bidirectional_iterator_tag iterator_category;
 
             iterator() { }
-            T &operator *() { return reinterpret_cast<node *>(_node)->_value; }
+            T &operator *() { return get_node()->_value; }
             T *operator ->() { return &**this; }
             iterator operator ++() { _node = _node->next; return *this; }
             iterator operator --() { _node = _node->prev; return *this; }
@@ -147,7 +148,7 @@ namespace ourstd
             iterator ret = it;
             ++ret;
             it._node->erase();
-            it.destroy();
+            delete it.get_node();
             return ret;
         }
         void push_front(const T &value) { insert(begin(), value); }
