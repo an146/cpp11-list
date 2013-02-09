@@ -105,9 +105,13 @@ test_speed(string L_desc)
     bench.mark("destroy");
 }
 
+//dummy.cpp; testing multi-unit compilation
+ourstd::list<int> get_list();
+
 int
 main()
 {
+    assert(get_list().empty());
     test_ints();
     test_nonpod();
     test_speed<std::list<int> >("std::list<int>");
