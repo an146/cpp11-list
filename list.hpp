@@ -76,6 +76,11 @@ namespace ourstl
             friend class list;
             list_node *_node;
             iterator(list_node *n) : _node(n) { }
+        protected:
+            void destroy()
+            {
+                delete reinterpret_cast<node *>(_node);
+            }
         public:
             typedef list::difference_type difference_type;
             typedef list::value_type value_type;
@@ -120,10 +125,17 @@ namespace ourstl
         };
 
         list() { head.reset(); }
+        ~list() { clear(); }
         iterator begin() { return head.next; }
         iterator end() { return &head; }
         const_iterator begin() const { return head.next; }
         const_iterator end() const { return &head; }
+        bool empty() const { return begin() == end(); }
+        void clear()
+        {
+            while (!empty())
+                erase(begin());
+        }
         iterator insert(iterator where, const T &value)
         {
             node *n = new node(value);
@@ -135,6 +147,7 @@ namespace ourstl
             iterator ret = it;
             ++ret;
             it._node->erase();
+            it.destroy();
             return ret;
         }
         void push_front(const T &value) { insert(begin(), value); }

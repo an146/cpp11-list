@@ -1,17 +1,18 @@
+#include <chrono>
 #include <iostream>
-//#include <list>
+#include <iomanip>
+#include <list>
 #include "list.hpp"
 #include "test.hpp"
 
 using namespace std;
 using namespace ourstl::test;
-using ourstl::list;
 
 void
 test_ints()
 {
-    list<int> ls;
-    list<int>::iterator it;
+    ourstl::list<int> ls;
+    ourstl::list<int>::iterator it;
 
     ls.push_back(0);
     ls.push_back(1);
@@ -32,7 +33,7 @@ test_ints()
     assert_contents(ls, {4, 2, 124, 123, 0, 3});
 
     //some const_iterator testing
-    const list<int> &cls = ls;
+    const ourstl::list<int> &cls = ls;
     assert_contents(cls, {4, 2, 124, 123, 0, 3});
     assert_contents(ls, cls);
     assert_contents(cls, ls);
@@ -51,11 +52,52 @@ struct A
 void
 test_nonpod()
 {
-    list<A> ls;
+    ourstl::list<A> ls;
     ls.push_back(A(42));
     ls.reverse();
     ls.erase(ls.begin());
     assert(ls.begin() == ls.end());
+}
+
+class benchmark
+{
+    std::chrono::time_point<std::chrono::system_clock> start, last;
+public:
+    explicit benchmark(string bench_desc) : start(std::chrono::system_clock::now()), last(start)
+    {
+        using namespace std;
+        cout << "Benchmarking: " << bench_desc << endl;
+    }
+    void mark(string desc)
+    {
+        using namespace std;
+        using namespace std::chrono;
+        auto mrk = system_clock::now();
+        int elapsed = duration_cast<milliseconds>(mrk-last).count();
+        last = mrk;
+        cout << fixed << setprecision(3);
+        cout << desc << ": " << elapsed/1000.0f << "s" << endl;
+    }
+};
+
+template <class L>
+void
+test_speed(string L_desc)
+{
+    const int Lists = 20;
+    const int Elements = 1000000;
+
+    benchmark bench(L_desc);
+    L *ls = new L[Lists];
+    for (int i = 0; i < Lists; i++) {
+        L *l = &ls[i];
+        for (int j = 0; j < Elements; j++) {
+            l->push_back(j);
+        }
+    }
+    bench.mark("create&push");
+    delete[] ls;
+    bench.mark("destroy");
 }
 
 int
@@ -63,5 +105,6 @@ main()
 {
     test_ints();
     test_nonpod();
-    cerr << "OK" << endl;
+    test_speed<std::list<int> >("std::list<int>");
+    test_speed<ourstl::list<int> >("ourstl::list<int>");
 }
