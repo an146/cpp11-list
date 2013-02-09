@@ -2,6 +2,7 @@
 #define OURSTL_LIST_H
 
 #include <algorithm>
+#include <iterator>
 
 namespace ourstl
 {
@@ -38,7 +39,7 @@ namespace ourstl
         }
     };
 
-    template <class T>
+    template <class T, class A = std::allocator<T> >
     class list
     {
         struct node
@@ -52,6 +53,12 @@ namespace ourstl
         list_node head;
 
     public:
+        typedef typename A::difference_type difference_type;
+        typedef typename A::value_type value_type;
+        typedef typename A::reference reference;
+        typedef typename A::const_reference const_reference;
+        typedef typename A::pointer pointer;
+
         //TODO: basic_iterator<class NodePointer, ...>
         class iterator;
         class const_iterator;
@@ -70,6 +77,13 @@ namespace ourstl
             list_node *_node;
             iterator(list_node *n) : _node(n) { }
         public:
+            typedef list::difference_type difference_type;
+            typedef list::value_type value_type;
+            typedef list::reference reference;
+            typedef list::const_reference const_reference;
+            typedef list::pointer pointer;
+            typedef std::bidirectional_iterator_tag iterator_category;
+
             iterator() { }
             T &operator *() { return reinterpret_cast<node *>(_node)->_value; }
             T *operator ->() { return &**this; }
@@ -80,8 +94,16 @@ namespace ourstl
             bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
-        class const_iterator
+        class const_iterator : public std::bidirectional_iterator_tag
         {
+            //TODO: make sure about pointer/reference constness
+            typedef list::difference_type difference_type;
+            typedef list::value_type value_type;
+            typedef list::reference reference;
+            typedef list::const_reference const_reference;
+            typedef list::pointer pointer;
+            typedef std::bidirectional_iterator_tag iterator_category;
+
             friend class list;
             const list_node *_node;
             const_iterator(const list_node *n) : _node(n) { }

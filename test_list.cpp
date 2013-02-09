@@ -20,7 +20,7 @@ test_ints()
     ls.push_back(4);
     assert_contents(ls, {3, 0, 1, 2, 4});
 
-    it = ls.begin(); ++it; ++it;
+    it = next(ls.begin(), 2);
     ls.insert(it, 123);
     assert_contents(ls, {3, 0, 123, 1, 2, 4});
     it = ls.erase(it);
