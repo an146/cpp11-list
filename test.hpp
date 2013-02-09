@@ -2,7 +2,7 @@
 #include <iostream>
 #include <utility>
 
-namespace ourstl {
+namespace ourstd {
 namespace test {
 
 template <class InputIterator1, class InputIterator2>

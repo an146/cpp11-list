@@ -6,13 +6,13 @@
 #include "test.hpp"
 
 using namespace std;
-using namespace ourstl::test;
+using namespace ourstd::test;
 
 void
 test_ints()
 {
-    ourstl::list<int> ls;
-    ourstl::list<int>::iterator it;
+    ourstd::list<int> ls;
+    ourstd::list<int>::iterator it;
 
     ls.push_back(0);
     ls.push_back(1);
@@ -33,7 +33,7 @@ test_ints()
     assert_contents(ls, {4, 2, 124, 123, 0, 3});
 
     //some const_iterator testing
-    const ourstl::list<int> &cls = ls;
+    const ourstd::list<int> &cls = ls;
     assert_contents(cls, {4, 2, 124, 123, 0, 3});
     assert_contents(ls, cls);
     assert_contents(cls, ls);
@@ -52,7 +52,7 @@ struct A
 void
 test_nonpod()
 {
-    ourstl::list<A> ls;
+    ourstd::list<A> ls;
     ls.push_back(A(42));
     ls.reverse();
     ls.erase(ls.begin());
@@ -106,5 +106,5 @@ main()
     test_ints();
     test_nonpod();
     test_speed<std::list<int> >("std::list<int>");
-    test_speed<ourstl::list<int> >("ourstl::list<int>");
+    test_speed<ourstd::list<int> >("ourstd::list<int>");
 }
