@@ -70,7 +70,7 @@ namespace ourstd
             friend class iterator;
             friend class const_iterator;
             const list_node *_node;
-            iterator_identity(const list_node *n) : _node(n) { }
+            inline iterator_identity(const list_node *n) : _node(n) { }
         };
 
         class iterator
@@ -78,9 +78,9 @@ namespace ourstd
             friend class const_iterator;
             friend class list;
             list_node *_node;
-            iterator(list_node *n) : _node(n) { }
+            inline iterator(list_node *n) : _node(n) { }
         protected:
-            node *get_node() const
+            inline node *get_node() const
             {
                 return reinterpret_cast<node *>(_node);
             }
@@ -92,14 +92,14 @@ namespace ourstd
             typedef list::pointer pointer;
             typedef std::bidirectional_iterator_tag iterator_category;
 
-            iterator() { }
-            T &operator *() { return get_node()->_value; }
-            T *operator ->() { return &**this; }
-            iterator operator ++() { _node = _node->next; return *this; }
-            iterator operator --() { _node = _node->prev; return *this; }
-            operator iterator_identity() const { return _node; }
-            bool operator ==(const iterator_identity &other) const { return _node == other._node; }
-            bool operator !=(const iterator_identity &other) const { return _node != other._node; }
+            inline iterator() { }
+            inline T &operator *() { return get_node()->_value; }
+            inline T *operator ->() { return &**this; }
+            inline iterator operator ++() { _node = _node->next; return *this; }
+            inline iterator operator --() { _node = _node->prev; return *this; }
+            inline operator iterator_identity() const { return _node; }
+            inline bool operator ==(const iterator_identity &other) const { return _node == other._node; }
+            inline bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
         class const_iterator : public std::bidirectional_iterator_tag
@@ -114,26 +114,26 @@ namespace ourstd
 
             friend class list;
             const list_node *_node;
-            const_iterator(const list_node *n) : _node(n) { }
+            inline const_iterator(const list_node *n) : _node(n) { }
         public:
-            const_iterator() { }
-            const_iterator(iterator it) : _node(it._node) { }
-            const T &operator *() { return reinterpret_cast<const node *>(_node)->_value; }
-            const T *operator ->() { return &**this; }
-            const_iterator operator ++() { _node = _node->next; return *this; }
-            const_iterator operator --() { _node = _node->prev; return *this; }
-            operator iterator_identity() const { return _node; }
-            bool operator ==(const iterator_identity &other) const { return _node == other._node; }
-            bool operator !=(const iterator_identity &other) const { return _node != other._node; }
+            inline const_iterator() { }
+            inline const_iterator(iterator it) : _node(it._node) { }
+            inline const T &operator *() { return reinterpret_cast<const node *>(_node)->_value; }
+            inline const T *operator ->() { return &**this; }
+            inline const_iterator operator ++() { _node = _node->next; return *this; }
+            inline const_iterator operator --() { _node = _node->prev; return *this; }
+            inline operator iterator_identity() const { return _node; }
+            inline bool operator ==(const iterator_identity &other) const { return _node == other._node; }
+            inline bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
-        list() { head.reset(); }
-        ~list() { clear(); }
-        iterator begin() { return head.next; }
-        iterator end() { return &head; }
-        const_iterator begin() const { return head.next; }
-        const_iterator end() const { return &head; }
-        bool empty() const { return begin() == end(); }
+        inline list() { head.reset(); }
+        inline ~list() { clear(); }
+        inline iterator begin() { return head.next; }
+        inline iterator end() { return &head; }
+        inline const_iterator begin() const { return head.next; }
+        inline const_iterator end() const { return &head; }
+        inline bool empty() const { return begin() == end(); }
         void clear()
         {
             while (!empty())
@@ -157,8 +157,8 @@ namespace ourstd
             allocator.deallocate(n, 1);
             return ret;
         }
-        void push_front(const T &value) { insert(begin(), value); }
-        void push_back(const T &value) { insert(end(), value); }
+        inline void push_front(const T &value) { insert(begin(), value); }
+        inline void push_back(const T &value) { insert(end(), value); }
 
         void reverse()
         {
