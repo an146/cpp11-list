@@ -104,7 +104,7 @@ public:
         inline bool operator !=(const iterator_identity &other) const { return _node != other._node; }
     };
 
-    class const_iterator : public std::bidirectional_iterator_tag
+    class const_iterator
     {
         //TODO: make sure about pointer/reference constness
         typedef list::difference_type difference_type;
