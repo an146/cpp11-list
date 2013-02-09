@@ -38,11 +38,11 @@ void assert_range(InputIterator b, InputIterator e, std::initializer_list<T> il)
 { return assert_range(b, e, il.begin(), il.end()); }
 
 template <class Cont1, class Cont2>
-void assert_cont(const Cont1 &c1, const Cont2 &c2)
+void assert_contents(const Cont1 &c1, const Cont2 &c2)
 { return assert_range(c1.begin(), c1.end(), c2.begin(), c2.end()); }
 
 template <class Cont, class T>
-void assert_cont(const Cont &c, std::initializer_list<T> il)
+void assert_contents(const Cont &c, std::initializer_list<T> il)
 { return assert_range(c.begin(), c.end(), il.begin(), il.end()); }
 
 }
