@@ -51,6 +51,7 @@ namespace ourstd
         };
 
         list_node head;
+        int _size;
 
         typedef std::allocator<node> A;
         A allocator;
@@ -127,7 +128,7 @@ namespace ourstd
             inline bool operator !=(const iterator_identity &other) const { return _node != other._node; }
         };
 
-        inline list() { head.reset(); }
+        inline list() : _size(0) { head.reset(); }
         inline ~list() { clear(); }
         inline iterator begin() { return head.next; }
         inline iterator end() { return &head; }
@@ -144,6 +145,7 @@ namespace ourstd
             node *n = allocator.allocate(1);
             allocator.construct(n, value);
             n->_node.insert_before(where._node);
+            _size++;
             return &n->_node;
         }
         iterator erase(iterator it)
@@ -151,6 +153,7 @@ namespace ourstd
             iterator ret = it;
             ++ret;
             it._node->erase();
+            _size--;
 
             node *n = it.get_node();
             allocator.destroy(n);
@@ -159,6 +162,7 @@ namespace ourstd
         }
         inline void push_front(const T &value) { insert(begin(), value); }
         inline void push_back(const T &value) { insert(end(), value); }
+        int size() const { return _size; }
 
         void reverse()
         {

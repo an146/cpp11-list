@@ -100,6 +100,7 @@ test_speed(string L_desc)
         for (int j = 0; j < Elements; j++) {
             l->push_back(j);
         }
+        assert(l->size() == Elements);
     }
     bench.mark("create&push");
 
