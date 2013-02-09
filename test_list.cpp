@@ -94,6 +94,7 @@ test_speed(string L_desc)
 
     benchmark bench(L_desc);
     L *ls = new L[Lists];
+
     for (int i = 0; i < Lists; i++) {
         L *l = &ls[i];
         for (int j = 0; j < Elements; j++) {
@@ -101,6 +102,20 @@ test_speed(string L_desc)
         }
     }
     bench.mark("create&push");
+
+    for (int i = 0; i < Lists; i++) {
+        ls[i].reverse();
+    }
+    bench.mark("reverse");
+
+    for (int i = 0; i < Lists; i++) {
+        L *l = &ls[i];
+        int x = Elements - 1;
+        for (typename L::const_iterator i = l->begin(); i != l->end(); ++i)
+            assert(*i == x--);
+    }
+    bench.mark("check");
+
     delete[] ls;
     bench.mark("destroy");
 }
