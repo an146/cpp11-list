@@ -39,7 +39,7 @@ namespace ourstd
         }
     };
 
-    template <class T, class A = std::allocator<T> >
+    template <class T>
     class list
     {
         struct node
@@ -51,6 +51,8 @@ namespace ourstd
         };
 
         list_node head;
+
+        typedef std::allocator<node> A;
         A allocator;
 
     public:
@@ -139,7 +141,8 @@ namespace ourstd
         }
         iterator insert(iterator where, const T &value)
         {
-            node *n = new node(value);
+            node *n = allocator.allocate(1);
+            allocator.construct(n, value);
             n->_node.insert_before(where._node);
             return &n->_node;
         }
@@ -148,7 +151,10 @@ namespace ourstd
             iterator ret = it;
             ++ret;
             it._node->erase();
-            delete it.get_node();
+
+            node *n = it.get_node();
+            allocator.destroy(n);
+            allocator.deallocate(n, 1);
             return ret;
         }
         void push_front(const T &value) { insert(begin(), value); }
