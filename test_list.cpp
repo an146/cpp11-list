@@ -66,7 +66,12 @@ public:
     explicit benchmark(string bench_desc) : start(std::chrono::system_clock::now()), last(start)
     {
         using namespace std;
-        cout << "Benchmarking: " << bench_desc << endl;
+        cout << "=== Benchmarking: " << bench_desc << endl;
+    }
+    ~benchmark()
+    {
+        last = start;
+        mark("Total elapsed");
     }
     void mark(string desc)
     {
