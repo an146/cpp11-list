@@ -31,6 +31,13 @@ test_ints()
 
     ls.reverse();
     assert_contents(ls, {4, 2, 124, 123, 0, 3});
+    ls.erase(ls.begin());
+    assert_contents(ls, {2, 124, 123, 0, 3});
+    ls.erase(prev(ls.end()));
+    assert_contents(ls, {2, 124, 123, 0});
+    ls.push_front(4);
+    ls.push_back(3);
+    assert_contents(ls, {4, 2, 124, 123, 0, 3});
 
     //some const_iterator testing
     const ourstd::list<int> &cls = ls;
