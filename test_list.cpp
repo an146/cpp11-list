@@ -137,6 +137,10 @@ main()
     assert(get_list().empty());
     test_ints();
     test_nonpod();
+    test_speed<ourstd::list<int> >("ourstd::list<int>");
     test_speed<std::list<int> >("std::list<int>");
     test_speed<ourstd::list<int> >("ourstd::list<int>");
+    test_speed<std::list<int> >("std::list<int>");
+    test_speed<ourstd::list<int> >("ourstd::list<int>");
+    test_speed<std::list<int> >("std::list<int>");
 }
